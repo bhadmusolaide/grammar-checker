@@ -1,0 +1,15 @@
+{
+  "watch": ["."],
+  "ignore": [
+    "node_modules",
+    "ollama_debug.log",
+    "*.log",
+    "data/*.json",
+    "uploads/*",
+    "logs/*"
+  ],
+  "ext": "js,json",
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

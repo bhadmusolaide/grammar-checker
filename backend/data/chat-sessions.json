@@ -1,0 +1,59 @@
+[
+  {
+    "id": "1756386502776",
+    "title": "New Chat",
+    "createdAt": "2025-08-28T13:08:22.776Z",
+    "updatedAt": "2025-08-28T20:47:54.098Z",
+    "model": {
+      "provider": "ollama",
+      "model": "qwen2.5:3b"
+    }
+  },
+  {
+    "id": "1756429651325",
+    "title": "Gemma Gen",
+    "createdAt": "2025-08-29T01:07:31.325Z",
+    "updatedAt": "2025-08-30T12:32:40.374Z",
+    "model": {
+      "provider": "ollama",
+      "model": "stablelm-zephyr:3b"
+    }
+  },
+  {
+    "id": "1756556860672",
+    "title": "Test Session",
+    "createdAt": "2025-08-30T12:27:40.672Z",
+    "updatedAt": "2025-08-30T12:28:29.894Z",
+    "model": "groq/llama-3.1-8b-instant"
+  },
+  {
+    "id": "1756557071768",
+    "title": "Stable Gen",
+    "createdAt": "2025-08-30T12:31:11.768Z",
+    "updatedAt": "2025-08-30T12:32:46.016Z",
+    "model": {
+      "provider": "ollama",
+      "model": "stablelm-zephyr:3b"
+    }
+  },
+  {
+    "id": "1756557255825",
+    "title": "New Chat",
+    "createdAt": "2025-08-30T12:34:15.825Z",
+    "updatedAt": "2025-09-01T18:20:06.803Z",
+    "model": {
+      "provider": "ollama",
+      "model": "qwen2.5:3b"
+    }
+  },
+  {
+    "id": "1756831680091",
+    "title": "Groq Chat",
+    "createdAt": "2025-09-02T16:48:00.091Z",
+    "updatedAt": "2025-09-02T16:49:36.971Z",
+    "model": {
+      "provider": "ollama",
+      "model": "gemma3:1b"
+    }
+  }
+]

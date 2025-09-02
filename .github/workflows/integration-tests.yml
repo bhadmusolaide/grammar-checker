@@ -1,0 +1,249 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run tests daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+        
+    services:
+      # Add any required services here (e.g., databases)
+      
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: |
+          grammar-checker/package-lock.json
+          backend/package-lock.json
+    
+    - name: Install frontend dependencies
+      working-directory: ./grammar-checker
+      run: npm ci
+      
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      working-directory: ./grammar-checker
+      run: npx playwright install --with-deps
+      
+    - name: Build frontend
+      working-directory: ./grammar-checker
+      run: npm run build
+      
+    - name: Start backend server
+      working-directory: ./backend
+      run: |
+        npm start &
+        echo $! > backend.pid
+        # Wait for backend to be ready
+        timeout 30 bash -c 'until curl -f http://localhost:3001/api/test-connection; do sleep 1; done'
+      env:
+        NODE_ENV: test
+        
+    - name: Start frontend server
+      working-directory: ./grammar-checker
+      run: |
+        npm run preview &
+        echo $! > frontend.pid
+        # Wait for frontend to be ready
+        timeout 30 bash -c 'until curl -f http://localhost:4173; do sleep 1; done'
+        
+    - name: Run unit tests
+      working-directory: ./grammar-checker
+      run: npm run test:coverage
+      
+    - name: Run integration tests
+      working-directory: ./grammar-checker
+      run: npm run test:integration
+      env:
+        CI: true
+        
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-${{ matrix.node-version }}
+        path: |
+          grammar-checker/coverage/
+          grammar-checker/test-results/
+          grammar-checker/playwright-report/
+        retention-days: 7
+        
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+      if: matrix.node-version == '20.x'
+      with:
+        file: ./grammar-checker/coverage/lcov.info
+        flags: frontend
+        name: frontend-coverage
+        
+    - name: Comment PR with test results
+      uses: actions/github-script@v7
+      if: github.event_name == 'pull_request' && always()
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          // Read test results if available
+          let testSummary = '## 🧪 Test Results\n\n';
+          
+          try {
+            // Check if test results exist
+            const resultsPath = './grammar-checker/test-results';
+            if (fs.existsSync(resultsPath)) {
+              testSummary += '✅ Integration tests completed\n';
+            }
+            
+            const coveragePath = './grammar-checker/coverage/coverage-summary.json';
+            if (fs.existsSync(coveragePath)) {
+              const coverage = JSON.parse(fs.readFileSync(coveragePath, 'utf8'));
+              const totalCoverage = coverage.total.lines.pct;
+              testSummary += `📊 Code coverage: ${totalCoverage}%\n`;
+            }
+            
+          } catch (error) {
+            testSummary += '⚠️ Could not read test results\n';
+          }
+          
+          testSummary += `\n🔗 [View detailed test report](${context.payload.pull_request.html_url}/checks)`;
+          
+          // Find existing comment
+          const comments = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const existingComment = comments.data.find(
+            comment => comment.user.login === 'github-actions[bot]' && 
+                      comment.body.includes('🧪 Test Results')
+          );
+          
+          if (existingComment) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: existingComment.id,
+              body: testSummary
+            });
+          } else {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: testSummary
+            });
+          }
+          
+    - name: Cleanup
+      if: always()
+      run: |
+        # Stop servers
+        if [ -f ./backend/backend.pid ]; then
+          kill $(cat ./backend/backend.pid) || true
+        fi
+        if [ -f ./grammar-checker/frontend.pid ]; then
+          kill $(cat ./grammar-checker/frontend.pid) || true
+        fi
+        
+  performance-test:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: |
+          grammar-checker/package-lock.json
+          backend/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd grammar-checker && npm ci
+        cd ../backend && npm ci
+        
+    - name: Install Playwright browsers
+      working-directory: ./grammar-checker
+      run: npx playwright install --with-deps
+      
+    - name: Run performance tests
+      working-directory: ./grammar-checker
+      run: |
+        # Start servers
+        cd ../backend && npm start &
+        cd ../grammar-checker && npm run preview &
+        
+        # Wait for servers
+        timeout 30 bash -c 'until curl -f http://localhost:3001/api/test-connection; do sleep 1; done'
+        timeout 30 bash -c 'until curl -f http://localhost:4173; do sleep 1; done'
+        
+        # Run performance-focused tests
+        npx playwright test --grep "performance|response time" --reporter=json > performance-results.json
+        
+    - name: Analyze performance results
+      run: |
+        # Create performance report
+        node -e "
+        const fs = require('fs');
+        try {
+          const results = JSON.parse(fs.readFileSync('./grammar-checker/performance-results.json', 'utf8'));
+          const performanceTests = results.suites.flatMap(s => s.specs).filter(spec => 
+            spec.title.includes('performance') || spec.title.includes('response time')
+          );
+          
+          console.log('## 🚀 Performance Test Results');
+          console.log('| Test | Status | Duration |');
+          console.log('|------|--------|----------|');
+          
+          performanceTests.forEach(test => {
+            const status = test.tests[0].results[0].status === 'passed' ? '✅' : '❌';
+            const duration = test.tests[0].results[0].duration || 0;
+            console.log('|', test.title, '|', status, '|', duration + 'ms', '|');
+          });
+        } catch (error) {
+          console.log('Could not parse performance results:', error.message);
+        }
+        "
+        
+  security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run security audit
+      run: |
+        cd grammar-checker && npm audit --audit-level=moderate
+        cd ../backend && npm audit --audit-level=moderate
+        
+    - name: Run dependency check
+      uses: actions/dependency-review-action@v4
+      if: github.event_name == 'pull_request'
