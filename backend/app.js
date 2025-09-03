@@ -68,7 +68,7 @@ app.use('/api/ai', aiLimiter, testConnectionRoutes);
 
 // Health check endpoint (no rate limiting)
 app.get('/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Grammar Checker API is running' });
+  res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
 // Error handling middleware
