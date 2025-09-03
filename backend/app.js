@@ -44,13 +44,14 @@ const modelLimiter = expressRateLimit({
 });
 
 // Middleware
+const corsOrigins = process.env.NODE_ENV === 'production' 
+  ? [process.env.CORS_ORIGIN || 'https://ai-gc.vercel.app']
+  : ['http://localhost:5173', 'http://localhost:3000'];
+
 app.use(cors({
-  origin: [
-    'https://grammar-checker.vercel.app', // Replace with your actual Vercel domain
-    'http://localhost:5173' // For local development
-  ],
+  origin: corsOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  credentials: process.env.CORS_CREDENTIALS === 'true' || true
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(generalLimiter);

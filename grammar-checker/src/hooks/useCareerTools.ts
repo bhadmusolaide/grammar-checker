@@ -3,7 +3,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { modelProviderService } from '../services/modelProvider';
 import { CareerToolsInput, ResumeOptimizerOptions, JobApplicationOptions, UnifiedModel } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 export const useCareerTools = () => {
   const { state, dispatch } = useAppContext();

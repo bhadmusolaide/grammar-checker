@@ -50,7 +50,17 @@
     "id": "1756831680091",
     "title": "Groq Chat",
     "createdAt": "2025-09-02T16:48:00.091Z",
-    "updatedAt": "2025-09-02T16:49:36.971Z",
+    "updatedAt": "2025-09-03T09:11:48.197Z",
+    "model": {
+      "provider": "ollama",
+      "model": "gemma3:1b"
+    }
+  },
+  {
+    "id": "1756890755238",
+    "title": "New Chat",
+    "createdAt": "2025-09-03T09:12:35.238Z",
+    "updatedAt": "2025-09-03T09:12:43.470Z",
     "model": {
       "provider": "ollama",
       "model": "gemma3:1b"
