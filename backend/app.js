@@ -44,7 +44,14 @@ const modelLimiter = expressRateLimit({
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://grammar-checker.vercel.app', // Replace with your actual Vercel domain
+    'http://localhost:5173' // For local development
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(generalLimiter);
 

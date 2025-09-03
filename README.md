@@ -1,110 +1,76 @@
-# AI Grammar Checker
+# Grammar Checker
 
-A modern AI-powered grammar checking application that supports multiple AI providers including local Ollama models and cloud-based services.
+A modern, AI-powered grammar checking application that provides accurate grammar, style, and writing enhancement suggestions using advanced language models.
+
+## Project Structure
+
+This project is structured as a monorepo with two main components:
+
+- **Frontend**: React/TypeScript application with Vite in the `grammar-checker/` directory
+- **Backend**: Node.js/Express API server in the `backend/` directory
+
+## Deployment Instructions
+
+This application requires separate deployments for the frontend and backend:
+
+### Frontend Deployment (Vercel)
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Vercel will automatically detect the project structure using the `vercel.json` configuration
+4. Make sure to set the `VITE_API_URL` environment variable to point to your deployed backend URL
+
+### Backend Deployment (Render, Railway, or similar)
+
+1. Create an account on Render.com (or similar platform)
+2. Create a new Web Service and connect your GitHub repository
+3. Configure the service:
+   - Root Directory: `backend`
+   - Runtime: `Node`
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+4. Set up any required environment variables (API keys, etc.)
+
+## Local Development
+
+To run the project locally:
+
+1. Clone the repository
+2. Install dependencies:
+   ```
+   # Install backend dependencies
+   cd backend
+   npm install
+
+   # Install frontend dependencies
+   cd ../grammar-checker
+   npm install
+   ```
+3. Start the backend server:
+   ```
+   cd backend
+   npm start
+   ```
+4. Start the frontend development server:
+   ```
+   cd grammar-checker
+   npm run dev
+   ```
+5. Access the application at `http://localhost:5173`
 
 ## Features
 
-- **AI-Powered Grammar Checking**: Uses advanced AI models for accurate grammar and style suggestions
-- **Multiple Provider Support**: Supports Ollama (local), OpenAI, Groq, DeepSeek, Qwen, and OpenRouter
-- **Flexible API Key Management**: Use your own API keys or fallback to environment-configured keys
-- **Modern Web Interface**: Clean, responsive React frontend
-- **Real-time Processing**: Fast grammar checking with detailed suggestions
+- Grammar and style checking via AI models
+- Support for multiple AI providers (Ollama, OpenAI, Groq, DeepSeek, Qwen, OpenRouter)
+- Real-time text processing and suggestion rendering
+- Model configuration and provider switching
+- API key management (user-provided or environment fallback)
+- Writing score evaluation and enhancement recommendations
+- Chat interface for interactive writing assistance
+- Career tools (e.g., resume optimization, job application assistant)
 
-## Architecture
+## Technologies Used
 
-The application consists of two main components:
-
-- **Frontend** (`grammar-checker/`): React application with Vite
-- **Backend** (`backend/`): Node.js Express API server
-
-## Quick Start
-
-### Prerequisites
-
-- Node.js 16+ 
-- npm or yarn
-- Ollama (optional, for local AI models)
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd AI-grammar-web
-```
-
-2. Install backend dependencies:
-```bash
-cd backend
-npm install
-```
-
-3. Install frontend dependencies:
-```bash
-cd ../grammar-checker
-npm install
-```
-
-4. Configure environment variables:
-```bash
-cd ../backend
-cp .env.example .env
-# Edit .env with your API keys (optional)
-```
-
-### Running the Application
-
-1. Start the backend server:
-```bash
-cd backend
-npm start
-```
-
-2. Start the frontend development server:
-```bash
-cd grammar-checker
-npm run dev
-```
-
-3. Open your browser to `http://localhost:5173`
-
-## Supported AI Providers
-
-- **Ollama**: Local AI models (no API key required)
-- **OpenAI**: GPT models (API key required)
-- **Groq**: Fast inference models (API key required)
-- **DeepSeek**: DeepSeek models (API key required)
-- **Qwen**: Qwen models (API key required)
-- **OpenRouter**: Multiple model access (API key required)
-
-## API Usage
-
-The main endpoint for grammar checking is:
-
-```
-POST /api/orchestrator/check
-```
-
-Example request:
-```json
-{
-  "text": "This is a sample text with grammer errors.",
-  "modelConfig": {
-    "provider": "ollama",
-    "model": "llama3.2:3b"
-  },
-  "userApiKey": "optional-api-key"
-}
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License
-
-MIT License - see LICENSE file for details
+- **Frontend**: React, TypeScript, Vite, Tailwind CSS
+- **Backend**: Node.js, Express, JavaScript
+- **AI Integration**: Various AI providers with unified interface

@@ -30,6 +30,31 @@ build/
 test-results/
 coverage/
 .nyc_output/
+__tests__/
+*.test.*
+*.spec.*
+
+# Jest
+jest-test-results.json
+junit.xml
+
+# Temporary test files
+test-*.js
+*-test.js
+simple-test.js
+detailed-test.js
+
+# Debug files
+*debug*.js
+*debug*.ts
+debug-*.js
+debug-*.ts
+temp_*.js
+temp_*.ts
+
+# HTML test files
+*-communication.html
+test-*.html
 
 # Temporary files
 tmp/

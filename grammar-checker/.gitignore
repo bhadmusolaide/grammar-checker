@@ -15,6 +15,46 @@ dist-ssr
 # Documentation files that should not be committed
 README.md
 
+# Test files
+test-results/
+coverage/
+.nyc_output/
+__tests__/
+*.test.*
+*.spec.*
+
+# Playwright
+playwright-report/
+test-results/
+
+# Jest
+jest-test-results.json
+junit.xml
+
+# Temporary test files
+test-*.js
+*-test.js
+simple-test.js
+detailed-test.js
+
+# Debug files
+*debug*.js
+*debug*.ts
+debug-*.js
+debug-*.ts
+temp_*.js
+temp_*.ts
+
+# HTML test files
+*-communication.html
+test-*.html
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

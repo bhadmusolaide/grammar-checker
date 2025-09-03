@@ -2,7 +2,7 @@ import { useRef, useCallback } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { GrammarResult, UnifiedModel, CareerToolsInput, CareerToolsResult, ResumeOptimizerOptions, JobApplicationOptions } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 const API_KEY = import.meta.env.VITE_API_KEY || null;
 
 export const useGrammarApi = () => {

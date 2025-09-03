@@ -191,18 +191,37 @@ temp/
 test-results/
 coverage/
 .nyc_output/
+__tests__/
+*.test.*
+*.spec.*
 
-# Sentry
-.sentryclirc
+# Playwright
+playwright-report/
+test-results/
 
-# Local development
-.local
+# Jest
+jest-test-results.json
+junit.xml
 
-# Production builds
-grammar-checker/dist/
-backend/dist/
+# Temporary test files
+test-*.js
+*-test.js
+simple-test.js
+detailed-test.js
+test-*.ts
+*-test.ts
 
-# Package lock files (choose one)
-# package-lock.json
-# yarn.lock
-# pnpm-lock.yaml
+# Debug files
+*debug*.js
+*debug*.ts
+debug-*.js
+debug-*.ts
+temp_*.js
+temp_*.ts
+
+# HTML test files
+*-communication.html
+test-*.html
+
+# Documentation files that should not be committed
+CLAUDE.md

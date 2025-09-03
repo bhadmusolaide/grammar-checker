@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "buildCommand": "cd grammar-checker && npm install && npm run build",
+  "outputDirectory": "grammar-checker/dist",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
