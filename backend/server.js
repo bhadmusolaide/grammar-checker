@@ -100,11 +100,11 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(cors({
   origin: [
-    process.env.CORS_ORIGIN || 'https://grammar-checker.vercel.app',
+    process.env.CORS_ORIGIN || 'https://ai-gc.vercel.app',
     'http://localhost:5173' // For local development
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  credentials: process.env.CORS_CREDENTIALS === 'true' || true
 }));
 app.use(express.json({ limit: '10mb' }));
 
