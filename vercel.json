@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "cd grammar-checker && npm install && npm run build:vercel",
+  "buildCommand": "cd grammar-checker && npm install --force && npm run build:vercel",
   "outputDirectory": "grammar-checker/dist",
-  "framework": "vite",
-  "installCommand": "npm install --force",
+  "framework": null,
+  "installCommand": null,
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
