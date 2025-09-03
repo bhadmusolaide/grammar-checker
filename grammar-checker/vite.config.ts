@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => ({
       open: false,
       gzipSize: true,
       brotliSize: true
-    })] : [])
+    }) as any] : [])
   ],
   build: {
     // Production optimizations
