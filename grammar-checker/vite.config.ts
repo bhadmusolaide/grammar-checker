@@ -3,11 +3,13 @@ import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 
 // https://vite.dev/config/
-export default defineConfig(async ({ mode }) => {
+export default defineConfig(({ mode }) => {
   const plugins = [react()]
 
   if (mode === 'development') {
-    const { visualizer } = await import('rollup-plugin-visualizer')
+    // Use require to avoid async
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { visualizer } = require('rollup-plugin-visualizer')
     plugins.push(
       visualizer({
         filename: 'dist/stats.html',
@@ -80,7 +82,9 @@ export default defineConfig(async ({ mode }) => {
       },
     },
     define: {
-      __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0'),
+      __APP_VERSION__: JSON.stringify(
+        process.env.npm_package_version || '1.0.0'
+      ),
     },
   }
 })
