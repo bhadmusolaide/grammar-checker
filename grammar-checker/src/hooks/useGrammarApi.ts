@@ -113,7 +113,7 @@ export const useGrammarApi = () => {
         headers['x-api-key'] = API_KEY;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/humanize`, {
+      const response = await fetch(`${API_BASE_URL}/api/enhance/humanize`, {
         method: 'POST',
         headers,
         body: JSON.stringify({

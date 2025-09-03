@@ -4,6 +4,8 @@ import Layout from '../components/Layout';
 import { FullPageLoader } from '../components/common/LoadingStates';
 import { modelProviderService } from '../services/modelProvider';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 import Button from '../design-system/components/Button';
 import Card from '../design-system/components/Card';
 import Tabs from '../design-system/components/Tabs';
@@ -122,9 +124,10 @@ const HumanizerPage: React.FC = () => {
       
       const modelConfig = getModelConfig();
       console.log('Using model config for humanization:', modelConfig);
+      console.log('API_BASE_URL for humanize request:', API_BASE_URL);
       
       // Call the humanize API
-      const response = await fetch('/api/enhance/humanize', {
+      const response = await fetch(`${API_BASE_URL}/api/enhance/humanize`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
