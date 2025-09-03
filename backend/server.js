@@ -100,7 +100,7 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(cors({
   origin: [
-    'https://grammar-checker.vercel.app', // Replace with your actual Vercel domain
+    process.env.CORS_ORIGIN || 'https://grammar-checker.vercel.app',
     'http://localhost:5173' // For local development
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
