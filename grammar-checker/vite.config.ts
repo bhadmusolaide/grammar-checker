@@ -7,13 +7,13 @@ import { visualizer } from 'rollup-plugin-visualizer'
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
-    // Only include visualizer in development
-    ...(mode === 'development' ? [visualizer({
+    // Only include visualizer in development and not on Vercel
+    ...(mode === 'development' && process.env.VERCEL !== '1' ? [visualizer({
       filename: 'dist/stats.html',
       open: false,
       gzipSize: true,
       brotliSize: true
-    }) as any] : [])
+    })] : [])
   ],
   build: {
     // Production optimizations
