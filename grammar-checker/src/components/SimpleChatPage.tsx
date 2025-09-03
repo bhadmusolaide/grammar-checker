@@ -327,6 +327,15 @@ const SimpleChatPage: React.FC = () => {
                   className={`max-w-[70%] p-4 group relative ${
                     message.role === 'user'
                       ? 'bg-gray-100'
+                      : message.role === 'assistant' && (
+                          message.content.includes('technical difficulties') ||
+                          message.content.includes('currently unavailable') ||
+                          message.content.includes('taking longer than expected') ||
+                          message.content.includes('configuration issue') ||
+                          message.content.includes('not available') ||
+                          message.content.includes('at capacity')
+                        )
+                      ? 'bg-amber-50 border border-amber-200'
                       : 'bg-white border border-gray-200'
                   }`}
                 >
@@ -372,8 +381,15 @@ const SimpleChatPage: React.FC = () => {
                         </Button>
                       )}
                       
-                      {/* Retry button for assistant messages with technical difficulties */}
-                      {message.role === 'assistant' && message.content.includes('technical difficulties') && (
+                      {/* Retry button for assistant messages with errors */}
+                      {message.role === 'assistant' && (
+                        message.content.includes('technical difficulties') ||
+                        message.content.includes('currently unavailable') ||
+                        message.content.includes('taking longer than expected') ||
+                        message.content.includes('configuration issue') ||
+                        message.content.includes('not available') ||
+                        message.content.includes('at capacity')
+                      ) && (
                         <Button
                           onClick={() => retryMessage(message)}
                           variant="ghost"
