@@ -60,7 +60,7 @@
     "id": "1756890755238",
     "title": "New Chat",
     "createdAt": "2025-09-03T09:12:35.238Z",
-    "updatedAt": "2025-09-03T09:12:43.470Z",
+    "updatedAt": "2025-09-03T10:12:15.440Z",
     "model": {
       "provider": "ollama",
       "model": "gemma3:1b"

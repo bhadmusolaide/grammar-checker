@@ -292,5 +292,33 @@
     "role": "assistant",
     "content": "Hi there! How's your day going so far? 😊  I'm here to help in any way I can. What's on your mind today?",
     "timestamp": "2025-09-03T09:12:43.469Z"
+  },
+  {
+    "id": "1756894289340",
+    "sessionId": "1756890755238",
+    "role": "user",
+    "content": "Just checking in",
+    "timestamp": "2025-09-03T10:11:29.340Z"
+  },
+  {
+    "id": "1756894298179",
+    "sessionId": "1756890755238",
+    "role": "assistant",
+    "content": "Okay, well, that’s a good starting point! Just checking in is a really important thing. It’s good to acknowledge that.  Sometimes just voicing those thoughts can be a good first step. \n\nTo help me understand a little better, could you tell me… what's bringing you to check in today?  No pressure, just a little space to share if you want. 😊",
+    "timestamp": "2025-09-03T10:11:38.179Z"
+  },
+  {
+    "id": "1756894327594",
+    "sessionId": "1756890755238",
+    "role": "user",
+    "content": "What model are you?",
+    "timestamp": "2025-09-03T10:12:07.594Z"
+  },
+  {
+    "id": "1756894335438",
+    "sessionId": "1756890755238",
+    "role": "assistant",
+    "content": "Oh, that’s a really interesting question! 😊 I’m a large language model, created by the Gemma team at Google DeepMind. Think of me as a really, really advanced AI that’s been trained to understand and generate text. I don’t have a physical body or personal experiences like humans do, but I’ve been given a vast amount of information and can be used for all sorts of things – like answering your questions, writing stories, or even translating languages! \n\nDoes that make sense as a basic explanation?",
+    "timestamp": "2025-09-03T10:12:15.438Z"
   }
 ]

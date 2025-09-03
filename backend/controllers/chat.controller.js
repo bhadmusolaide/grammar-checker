@@ -141,8 +141,22 @@ const postMessage = async (req, res) => {
       }
     } catch (aiError) {
       console.error('AI service error:', aiError.message);
-      // Provide a fallback response instead of failing completely
-      response = 'I apologize, but I\'m experiencing technical difficulties right now. Please try again in a moment.';
+      
+      // Provide specific error messages based on the error type
+      if (aiError.message.includes('Cannot connect to Ollama')) {
+        response = 'Local AI models are currently unavailable. The system is attempting to use cloud-based alternatives. If this persists, please contact support.';
+      } else if (aiError.message.includes('Ollama request timed out')) {
+        response = 'The local AI service is taking longer than expected to respond. Please try again, or the system will automatically switch to faster cloud models.';
+      } else if (aiError.message.includes('Invalid') && aiError.message.includes('API key')) {
+        response = 'AI service configuration issue detected. Please contact support to resolve API key problems.';
+      } else if (aiError.message.includes('model not found') || aiError.message.includes('Model') && aiError.message.includes('not found')) {
+        response = 'The requested AI model is not available. The system will attempt to use an alternative model for your request.';
+      } else if (aiError.message.includes('rate limit') || aiError.message.includes('quota')) {
+        response = 'AI service is currently at capacity. Please wait a moment and try again, or the system will switch to alternative providers.';
+      } else {
+        // Generic fallback for unknown errors
+        response = 'I apologize, but I\'m experiencing technical difficulties right now. Please try again in a moment.';
+      }
     }
     const aiResponse = response;
 

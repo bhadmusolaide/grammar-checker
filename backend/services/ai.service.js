@@ -27,7 +27,33 @@ async function callUnifiedAI(promptOrMessages, modelConfig, ollamaPrompt = null,
       throw new Error('Model configuration with provider is required');
     }
 
-    const { provider, model, apiKey } = modelConfig;
+    let { provider, model, apiKey } = modelConfig;
+
+    // Environment detection: automatically use cloud models in production when Ollama is requested
+    const isProduction = process.env.NODE_ENV === 'production';
+    const isRenderEnvironment = process.env.RENDER === 'true' || process.env.RENDER_SERVICE_ID;
+    
+    if (provider.toLowerCase() === 'ollama' && (isProduction || isRenderEnvironment)) {
+      console.log('Production environment detected. Checking for cloud model alternatives...');
+      
+      // Try Groq first as it's fast and reliable
+      const groqKey = process.env.GROQ_API_KEY;
+      if (groqKey) {
+        console.log('Switching from Ollama to Groq for production environment');
+        provider = 'groq';
+        model = 'llama-3.1-8b-instant'; // Fast, reliable model for production
+      } else {
+        // Try OpenAI as secondary fallback
+        const openaiKey = process.env.OPENAI_API_KEY;
+        if (openaiKey) {
+          console.log('Switching from Ollama to OpenAI for production environment');
+          provider = 'openai';
+          model = 'gpt-3.5-turbo'; // Cost-effective model for production
+        } else {
+          console.warn('No cloud API keys available in production. Attempting Ollama connection...');
+        }
+      }
+    }
 
     // Log the provider being used for debugging
     console.log(`Using AI provider: ${provider} with model: ${model}`);
