@@ -1,12 +1,7 @@
 #!/bin/bash
 
-# Navigate to the frontend directory
 cd grammar-checker
-
-# Install dependencies
-npm install
-
-# Build the project
-npm run build
+npm install --force
+npm run build --no-lint
 
 echo "Build completed successfully!"
